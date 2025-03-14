@@ -171,7 +171,7 @@ def main():
         else:
             display_text = ", ".join(source_dirs_str)
 
-            source_label.config(text=f"소스 디렉토리: {display_text}")
+        source_label.config(text=f"소스 디렉토리: {display_text}")
 
     btn_select_source = tk.Button(root, text="소스 디렉토리 선택", command=on_select_source)
     btn_select_source.pack(pady=10)
