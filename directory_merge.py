@@ -204,28 +204,33 @@ class FileRenameApp:
         self.template_entry.insert(0, "<ORIGINAL>_<NUM>_<DATE>_<TIME>_<RAND>")
         self.template_entry.grid(row=5, column=0, pady=5, sticky="ew")
 
-        tk.Label(self.top_frame, text="파일 선택 와일드카드 패턴 (예: *.txt):").grid(row=6, column=0, pady=5, sticky="ew")
+        # 템플릿 규칙 설명 추가
+        template_description = tk.Label(self.top_frame, text="템플릿 규칙\n<ORIGINAL> - 원본 이름\n<NUM> - 숫자\n<DATE> - 날짜\n<TIME> - 시간\n<RAND> - 랜덤")
+        template_description.grid(row=6, column=0, pady=5, sticky="ew")
+
+        tk.Label(self.top_frame, text="파일 선택 와일드카드 패턴 (예: *.txt):").grid(row=7, column=0, pady=5, sticky="ew")
         self.pattern_entry = tk.Entry(self.top_frame, width=50)
         self.pattern_entry.insert(0, "*.*")
-        self.pattern_entry.grid(row=7, column=0, pady=5, sticky="ew")
+        self.pattern_entry.grid(row=8, column=0, pady=5, sticky="ew")
 
         # 템플릿 적용 옵션
         self.apply_template_var = tk.IntVar(value=1)
-        tk.Radiobutton(self.top_frame, text="중복된 파일에만 템플릿 적용", variable=self.apply_template_var, value=0).grid(row=8, column=0, pady=5, sticky="ew")
-        tk.Radiobutton(self.top_frame, text="모든 파일에 템플릿 적용", variable=self.apply_template_var, value=1).grid(row=9, column=0, pady=5, sticky="ew")
+        tk.Radiobutton(self.top_frame, text="중복된 파일에만 템플릿 적용", variable=self.apply_template_var, value=0).grid(row=9, column=0, pady=5, sticky="ew")
+        tk.Radiobutton(self.top_frame, text="모든 파일에 템플릿 적용", variable=self.apply_template_var, value=1).grid(row=10, column=0, pady=5, sticky="ew")
 
     def create_listbox_widgets(self):
         """미리보기 Listbox 및 스크롤바를 설정"""
+        rowspan = 11
         # Listbox와 스크롤바를 top_frame의 1, 2, 3번 열에 배치
         self.listbox_orig = tk.Listbox(self.top_frame, width=50, selectmode=tk.SINGLE)
-        self.listbox_orig.grid(row=0, column=1, padx=5, pady=10, sticky="ns", rowspan=10)  # rowspan으로 세로로 확장
+        self.listbox_orig.grid(row=0, column=1, padx=5, pady=10, sticky="ns", rowspan=rowspan)  # rowspan으로 세로로 확장
 
         self.listbox_new = tk.Listbox(self.top_frame, width=50, selectmode=tk.SINGLE)
-        self.listbox_new.grid(row=0, column=2, padx=0, pady=10, sticky="ns", rowspan=10)  # rowspan으로 세로로 확장
+        self.listbox_new.grid(row=0, column=2, padx=0, pady=10, sticky="ns", rowspan=rowspan)  # rowspan으로 세로로 확장
 
         # 스크롤바 추가
         scrollbar = tk.Scrollbar(self.top_frame, orient="vertical")
-        scrollbar.grid(row=0, column=3, padx=0, pady=10, sticky="ns", rowspan=10)  # rowspan으로 세로로 확장
+        scrollbar.grid(row=0, column=3, padx=0, pady=10, sticky="ns", rowspan=rowspan)  # rowspan으로 세로로 확장
 
         # 스크롤 동기화
         scrollbar.config(command=self.sync_scroll)
@@ -254,7 +259,7 @@ class FileRenameApp:
         self.listbox_new.yview_scroll(delta, "units")
         return "break"
 
-    def on_arrow_key(self, event):
+    def on_arrow_key(self, event:tk.Event):
         """방향키 이벤트 처리"""
         widget = event.widget  # 현재 키 입력이 발생한 위젯 (listbox_orig or listbox_new)
 
